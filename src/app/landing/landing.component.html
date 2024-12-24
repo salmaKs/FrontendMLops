@@ -17,20 +17,63 @@
         <div class="col px-0">
           <div class="row">
             <div class="col-lg-6">
-              <h1 class="display-3  text-white">A beautiful Design System
-                <span>completed with examples</span>
+              <h1 class="display-3  text-white">Upload the X-Ray
+                <span>For the Tuberculosis detection</span>
               </h1>
-              <p class="lead  text-white">The design system comes with four pre-built pages to help you get started faster. You can change the text and images and you're good to go.</p>
+              <p class="lead  text-white">Upload an X-ray image to detect potential signs of Tuberculosis using our AI-powered diagnostic tool.</p>
               <div class="btn-wrapper">
-                <a href="https://demos.creative-tim.com/argon-design-system-angular/documentation/alerts?ref=adsa-landing-page" class="btn btn-info btn-icon mb-3 mb-sm-0">
-                  <span class="btn-inner--icon"><i class="fa fa-code"></i></span>
-                  <span class="btn-inner--text">Components</span>
-                </a>
-                <a href="https://www.creative-tim.com/product/argon-design-system-angular?ref=adsa-landing-page" class="btn btn-white btn-icon mb-3 mb-sm-0">
-                  <span class="btn-inner--icon"><i class="ni ni-cloud-download-95"></i></span>
-                  <span class="btn-inner--text">Download Angular</span>
-                </a>
+                <button (click)="toggleUploadSection()" class="btn btn-lg btn-white btn-icon mb-3 mb-sm-0">
+                  <span class="btn-inner--icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                  <span class="btn-inner--text">Upload</span>
+                </button>
+  
+                
               </div>
+             <!-- Section Upload -->
+<div *ngIf="isUploadSectionVisible" 
+(click)="onBackgroundClick($event)"
+style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+<div (click)="onUploadBoxClick($event)"
+  style="background: white; padding: 30px; border-radius: 10px; text-align: center; border: 2px dashed #ccc; position: relative; width: 500px; height: 250px;">
+<!-- Close button (X) -->
+<button (click)="closeUploadSection()" style="position: absolute; top: 10px; right: 10px; background-color: red; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 20px;">
+ X
+</button>
+
+<p *ngIf="!imageUploaded">Drag and drop your X-ray image here or click to upload</p>
+
+<input *ngIf="!imageUploaded" type="file" (change)="onFileSelect($event)" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;" />
+
+<!-- Show after uploading -->
+<div *ngIf="imageUploaded">
+ <p>Image uploaded successfully!</p>
+ <img *ngIf="uploadedImage" [src]="imagePreview" alt="Uploaded Image" style="max-width: 100%; max-height: 150px; margin-bottom: 10px;" />
+ <div>
+  <!-- Analyze Button -->
+  <button (click)="analyzeImage()" 
+  style="background-color: blue; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-right: 10px;">
+Analyze Image
+</button>
+   <!-- Green button to close the section -->
+   <button (click)="closeUploadSection()" style="background-color: green; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-right: 10px;">Close</button>
+
+   <!-- Delete button to remove the uploaded image -->
+   <button (click)="deleteImage()" style="background-color: red; color: white; border: none; padding: 10px 20px; border-radius: 5px;">Delete Image</button>
+ </div>
+</div>
+
+ <!-- Display Analysis Results -->
+ <div *ngIf="predictionResult" style="margin-top: 20px;">
+  <p><strong>Analysis Result:</strong> {{ predictionResult }}</p>
+</div>
+
+<!-- Loader -->
+<div *ngIf="isAnalyzing" style="margin-top: 20px;">
+  <p>Analyzing image... Please wait.</p>
+</div>
+
+</div>
+</div>
             </div>
           </div>
         </div>
